@@ -33,6 +33,9 @@ export default function PostsClient({ userId }: PostsClientProps) {
         ...(userId !== 'All' && { userId }),
       }),
     placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: 1,
   });
 
   const toggleModal = () => setIsModalOpen((prev) => !prev);
@@ -47,7 +50,9 @@ export default function PostsClient({ userId }: PostsClientProps) {
     setSearchQuery(newQuery);
   }, 300);
 
-  const totalPages = Math.ceil(data.totalCount / 8);
+  const total = data?.totalCount || 0;
+
+  const totalPages = Math.ceil(total / 8);
   const posts = data?.posts ?? [];
 
   return (
